@@ -1,1 +1,5 @@
-<p>note works!</p>
+<div class="note-container" 
+     [style.--size.px]="size" 
+     [style.--alive]="alive ? '#ddd' : '#aaa'">
+    {{ alive? 1 : 0 }}
+</div>

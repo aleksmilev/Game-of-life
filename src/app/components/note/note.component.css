@@ -1,0 +1,10 @@
+.note-container{
+    height: var(--size);
+    width: var(--size);
+
+    background-color: var(--alive);
+    
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;    
+}

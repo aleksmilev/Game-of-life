@@ -4,11 +4,13 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TableComponent } from './components/table/table.component';
+import { NoteComponent } from './components/note/note.component';
 
 @NgModule({
   declarations: [
-	AppComponent,
-    TableComponent
+	  AppComponent,
+    TableComponent,
+    NoteComponent
   ],
   imports: [
     BrowserModule,
