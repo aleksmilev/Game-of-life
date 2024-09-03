@@ -9,7 +9,7 @@ import { Note } from './components/note/note.interface';
 export class AppComponent {
   	title = 'Game of life';
 	
-	public data = this.generateNotesData(15, 15);
+	public data: Note[][] = this.generateNotesData(15, 15);
 
 	private generateNotesData(height: number, length: number): Note[][] {
 		const data: Note[][] = [];
@@ -29,7 +29,7 @@ export class AppComponent {
 		return data;
 	}
 
-	public update_data(rowIndexTarget: number, colIndexTarget: number){
+	private updateSingleNote(rowIndexTarget: number, colIndexTarget: number): void {
 		const newData = this.data.map((row, rowIndex) => {
 			return row.map((note, colIndex) => {
 				if (rowIndex === rowIndexTarget && colIndex === colIndexTarget) {
@@ -40,5 +40,9 @@ export class AppComponent {
 		});
 	
 		this.data = newData; 
+	}
+
+	public updateData(): void {
+
 	}
 }

@@ -9,7 +9,7 @@ import { Note } from '../note/note.interface';
 export class TableComponent implements OnInit {
 	@Input({ required: true }) data: Note[][] = [];
 
-	ngOnInit() {
+	ngOnInit(): void {
 		console.log(this.data);
 	}
 }
