@@ -39,7 +39,7 @@ export class AppComponent {
 	private updateSingleNote(indexTarget: GridIndex, alive: boolean): void {
 		const newData = this.data.map((row, rowIndex) => {
 			return row.map((note, colIndex) => {
-				if (rowIndex === indexTarget.x && colIndex === indexTarget.y) {
+				if (rowIndex === indexTarget.y && colIndex === indexTarget.x) {
 					return { ...note, alive: alive };
 				}
 
@@ -63,8 +63,8 @@ export class AppComponent {
 		let aliveNeighbors = 0;
 
 		neighborIndexes.forEach((neighborIndex: GridIndex) => {
-			let rowIndexTarget = Math.max(0, Math.min(index.x + neighborIndex.x, this.gridDimensions.x - 1));
-			let colIndexTarget = Math.max(0, Math.min(index.y + neighborIndex.y, this.gridDimensions.y - 1));
+			let rowIndexTarget = Math.max(0, Math.min(index.y + neighborIndex.y, this.gridDimensions.y - 1));
+			let colIndexTarget = Math.max(0, Math.min(index.x + neighborIndex.x, this.gridDimensions.x - 1));
 			
 			if(this.data[rowIndexTarget][colIndexTarget].alive){
 				aliveNeighbors++;
@@ -75,20 +75,17 @@ export class AppComponent {
 	}
 
 	public updateData(): void {
-		this.data.forEach((row: Note[]) => {
-			row.forEach((note: Note) => {
-				const aliveNeighbors = this.getNumbeNeighbors(note.coordinates);
-				const shouldBeAlive = note.alive ? aliveNeighbors === 2 || aliveNeighbors === 3 : aliveNeighbors === 3;
-
-				if (note.alive !== shouldBeAlive) {
-					this.updateSingleNote(note.coordinates, shouldBeAlive);
-				}
-
-				console.log({
-					id: note.id,
-					aliveNeighbors: aliveNeighbors
-				})
+		setInterval(() => {
+			this.data.forEach((row: Note[]) => {
+				row.forEach((note: Note) => {
+					const aliveNeighbors = this.getNumbeNeighbors(note.coordinates);
+					const shouldBeAlive = note.alive ? aliveNeighbors === 2 || aliveNeighbors === 3 : aliveNeighbors === 3;
+	
+					if (note.alive !== shouldBeAlive) {
+						this.updateSingleNote(note.coordinates, shouldBeAlive);
+					}
+				});
 			});
-		});
+		}, 5000);
 	}
 }
