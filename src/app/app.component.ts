@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Note } from './components/note/note.interface';
+import { GridIndex } from './components/table/grid-index.interface';
 
 @Component({
   	selector: 'app-root',
@@ -9,18 +10,20 @@ import { Note } from './components/note/note.interface';
 export class AppComponent {
   	title = 'Game of life';
 	
-	public data: Note[][] = this.generateNotesData(15, 15);
+	private gridDimensions: GridIndex = { x: 15, y: 15};
 
-	private generateNotesData(height: number, length: number): Note[][] {
+	public data: Note[][] = this.generateNotesData(this.gridDimensions);
+
+	private generateNotesData(gridDimensions: GridIndex): Note[][] {
 		const data: Note[][] = [];
 		let idCounter = 1;
 	  
-		for (let row = 0; row < height; row++) {
+		for (let row = 0; row < gridDimensions.y; row++) {
 		  const rowData: Note[] = [];
-		  for (let col = 0; col < length; col++) {
+		  for (let col = 0; col < gridDimensions.x; col++) {
 			rowData.push({
 			  id: idCounter++,
-			  alive: Math.random() < 0.5
+			  alive: Math.random() < 0.2
 			});
 		  }
 		  data.push(rowData);
@@ -29,12 +32,13 @@ export class AppComponent {
 		return data;
 	}
 
-	private updateSingleNote(rowIndexTarget: number, colIndexTarget: number): void {
+	private updateSingleNote(indexTarget: GridIndex, alive: boolean): void {
 		const newData = this.data.map((row, rowIndex) => {
 			return row.map((note, colIndex) => {
-				if (rowIndex === rowIndexTarget && colIndex === colIndexTarget) {
-				return { ...note, alive: !note.alive };
+				if (rowIndex === indexTarget.x && colIndex === indexTarget.y) {
+					return { ...note, alive: alive };
 				}
+
 				return note;
 			});
 		});
@@ -42,7 +46,31 @@ export class AppComponent {
 		this.data = newData; 
 	}
 
-	public updateData(): void {
+	private generateCoordinates(): GridIndex[] {
+		const range = [-1, 0, 1];
+		return range.flatMap(x => 
+			range.map(y => ({ x, y }))
+		).filter(coord => coord.x !== 0 || coord.y !== 0);
+	}
 
+	private getNumbeNeighbors(index: GridIndex): number {
+		const neighborIndexes = this.generateCoordinates();
+		
+		let aliveNeighbors = 0;
+
+		neighborIndexes.forEach((neighborIndex: GridIndex) => {
+			let rowIndexTarget = Math.max(0, Math.min(index.x + neighborIndex.x, this.gridDimensions.x - 1));
+			let colIndexTarget = Math.max(0, Math.min(index.y + neighborIndex.y, this.gridDimensions.y - 1));
+			
+			if(this.data[rowIndexTarget][colIndexTarget].alive){
+				aliveNeighbors++;
+			}
+		})
+
+		return aliveNeighbors;
+	}
+
+	public updateData(): void {
+		console.log(this.getNumbeNeighbors({x:1, y:1}));
 	}
 }
