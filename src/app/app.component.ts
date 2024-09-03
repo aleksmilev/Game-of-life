@@ -22,8 +22,12 @@ export class AppComponent {
 		  const rowData: Note[] = [];
 		  for (let col = 0; col < gridDimensions.x; col++) {
 			rowData.push({
-			  id: idCounter++,
-			  alive: Math.random() < 0.2
+			  	id: idCounter++,
+			  	alive: Math.random() < 0.2,
+				coordinates: {
+					x: col,
+					y: row
+				}
 			});
 		  }
 		  data.push(rowData);
@@ -71,6 +75,20 @@ export class AppComponent {
 	}
 
 	public updateData(): void {
-		console.log(this.getNumbeNeighbors({x:1, y:1}));
+		this.data.forEach((row: Note[]) => {
+			row.forEach((note: Note) => {
+				const aliveNeighbors = this.getNumbeNeighbors(note.coordinates);
+				const shouldBeAlive = note.alive ? aliveNeighbors === 2 || aliveNeighbors === 3 : aliveNeighbors === 3;
+
+				if (note.alive !== shouldBeAlive) {
+					this.updateSingleNote(note.coordinates, shouldBeAlive);
+				}
+
+				console.log({
+					id: note.id,
+					aliveNeighbors: aliveNeighbors
+				})
+			});
+		});
 	}
 }
