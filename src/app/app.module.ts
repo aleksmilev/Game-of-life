@@ -7,19 +7,19 @@ import { TableComponent } from './components/table/table.component';
 import { NoteComponent } from './components/note/note.component';
 
 @NgModule({
-  declarations: [
-	  AppComponent,
-    TableComponent,
-    NoteComponent
-  ],
-  imports: [
-    BrowserModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule,		
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+	    AppComponent,
+      	TableComponent,
+    	NoteComponent,
+  	],
+	imports: [
+		BrowserModule,
+		ReactiveFormsModule,
+		FormsModule,
+		HttpClientModule,		
+	],
+	providers: [],
+  	bootstrap: [AppComponent]
 })
 
 export class AppModule { }

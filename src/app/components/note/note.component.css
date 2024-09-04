@@ -1,9 +1,13 @@
 .note-container{
     height: var(--size);
     width: var(--size);
+    border-radius: 50%;
 
     background-color: var(--alive);
+    color: #fff;
     
+    cursor: pointer;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;    

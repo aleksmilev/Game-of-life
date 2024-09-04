@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Note } from '../note/note.interface';
 
 @Component({
@@ -8,8 +8,11 @@ import { Note } from '../note/note.interface';
 })
 export class TableComponent implements OnInit {
 	@Input({ required: true }) data: Note[][] = [];
+	@Output() noteClickEvent: EventEmitter<Note> = new EventEmitter<Note>();
 
-	ngOnInit(): void {
-		console.log(this.data);
+	ngOnInit(): void {}
+
+	public noteClickEmit(note: Note) {
+		this.noteClickEvent.emit(note);
 	}
 }

@@ -1,5 +1,5 @@
 <div>
-    <app-table [data]="data"></app-table>
+    <app-table [data]="data" (noteClickEvent)="updateClickedNote($event)"></app-table>
 </div>
 
 <button (click)="updateData()">test</button>

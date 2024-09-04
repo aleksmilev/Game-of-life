@@ -1,23 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
 * {
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: monospace;
+    font-family: monospace;
+    background-color: var(--shadow-first-color);
+
+	margin: 20px;
 }
 :root {
-  --primary-color: #605DC8;
-  --secondary-color: #8B89E6;
-  --accent-color: #e8e7fa;
-  --shadow-color: #E8E8E8;
-}
-
-button.primary {
-  padding: 10px;
-  border: solid 1px var(--primary-color);
-  background: var(--primary-color);
-  color: white;
-  border-radius: 8px;
+    --primary-color: #FE2712;
+    --secondary-color: #0B4F6C;
+    --accent-color: #01BAEF;
+    --shadow-first-color: #FBFBFF;
+    --shadow-second-color: #040F16;
 }
