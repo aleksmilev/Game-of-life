@@ -1,0 +1,16 @@
+.connection-container {
+    transform-origin: left center;
+    transform: rotate(var(--rotation));
+
+    position: absolute;
+    top: 0;
+    left: 50%;
+
+    width: var(--extended);
+    height: var(--size);
+    
+
+    background-color: var(--primary-color);
+
+    z-index: -999;
+}

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Note } from '../components/note/note.interface';
 import { GridIndex } from '../components/table/grid-index.interface';
+import { CellConnection, CellConnectionManiger } from '../cell-connection/cell-connection';
 
 @Injectable({
   providedIn: 'root',
@@ -10,17 +11,18 @@ export class GameMechanicsService {
 	private dataSubject = new BehaviorSubject<Note[][]>([]);
 	public data$ = this.dataSubject.asObservable();
 
-	private static running: boolean = false;
+	public static running: boolean = false;
+	public static gridDimensions: GridIndex = { x: 15, y: 15 };
 
-	private static noteSize: number = 35;
+	public static noteSize: number = 35;
 
-	public generateNotesData(gridDimensions: GridIndex): Note[][] {
+	public generateNotesData(): Note[][] {
 		const data: Note[][] = [];
 		let idCounter = 1;
 
-		for (let row = 0; row < gridDimensions.y; row++) {
+		for (let row = 0; row < GameMechanicsService.gridDimensions.y; row++) {
 			const rowData: Note[] = [];
-			for (let col = 0; col < gridDimensions.x; col++) {
+			for (let col = 0; col < GameMechanicsService.gridDimensions.x; col++) {
 				rowData.push({
 				id: idCounter++,
 				alive: false,
@@ -36,6 +38,54 @@ export class GameMechanicsService {
 		return data;
 	}
 
+	public generateCoordinates(): GridIndex[] {
+		const range = [-1, 0, 1];
+
+		return range
+		.flatMap(x => range.map(y => ({ x, y })))
+		.filter(coord => coord.x !== 0 || coord.y !== 0);
+	}
+
+	public getNeighbors(data: Note[][], index: GridIndex): Note[]{
+		const neighborIndexes = this.generateCoordinates();
+
+		return neighborIndexes
+			.map(({ x, y }) => {
+				const rowIndexTarget = index.y + y;
+				const colIndexTarget = index.x + x;
+				return data[rowIndexTarget]?.[colIndexTarget];
+			})
+			.filter((neighbor) => neighbor && neighbor.alive) as Note[];
+	}
+
+	public updateConnections(): void {
+		const data: Note[][] = this.dataSubject.getValue();
+
+		data.forEach((row: Note[]) => {
+			row.forEach((note: Note) => {
+				if(note.alive){
+					this.getNeighbors(data, note.coordinates).forEach((neighbor: Note) => {
+						const cellConnection: CellConnection = {
+							self: note.coordinates,
+							target: neighbor.coordinates
+						};
+
+						if(!CellConnectionManiger.checkExistingConnection(cellConnection)){
+							CellConnectionManiger.cellConnections.push(cellConnection)
+						}
+					});
+				} else {
+					CellConnectionManiger.cellConnections = CellConnectionManiger.cellConnections.filter((cellConnection: CellConnection) => {
+						return (
+							!CellConnectionManiger.areGridIndexesEqual(note.coordinates, cellConnection.self) &&
+							!CellConnectionManiger.areGridIndexesEqual(note.coordinates, cellConnection.target)
+						);
+					});
+				}			
+			});
+		});
+	}
+
 	public updateSingleNote(indexTarget: GridIndex, alive: boolean): void {
 		const data: Note[][] = this.dataSubject.getValue();
 		const newData = data.map((row, rowIndex) => {
@@ -49,35 +99,11 @@ export class GameMechanicsService {
 		});
 
 		this.dataSubject.next(newData);
+		this.updateConnections();
 	}
 
-	public generateCoordinates(): GridIndex[] {
-		const range = [-1, 0, 1];
-
-		return range
-		.flatMap(x => range.map(y => ({ x, y })))
-		.filter(coord => coord.x !== 0 || coord.y !== 0);
-	}
-
-	public getNumbeNeighbors(data: Note[][], gridDimensions: GridIndex, index: GridIndex): number {
-		const neighborIndexes = this.generateCoordinates();
-
-		let aliveNeighbors = 0;
-
-		neighborIndexes.forEach((neighborIndex: GridIndex) => {
-			const rowIndexTarget = Math.max(0, Math.min(index.y + neighborIndex.y, gridDimensions.y - 1));
-			const colIndexTarget = Math.max(0, Math.min(index.x + neighborIndex.x, gridDimensions.x - 1));
-
-			if (data[rowIndexTarget][colIndexTarget].alive) {
-				aliveNeighbors++;
-			}
-		});
-
-		return aliveNeighbors;
-	}
-
-	public updateData(gridDimensions: GridIndex): void {
-		GameMechanicsService.running = !GameMechanicsService.running;
+	public updateData(): void {
+		GameMechanicsService.running = true;
 
 		const interval = setInterval(() => {
 			const data: Note[][] = this.dataSubject.getValue();
@@ -85,7 +111,7 @@ export class GameMechanicsService {
 
 			const newData = data.map((row: Note[]) => {
 				return row.map((note: Note) => {
-					const aliveNeighbors = this.getNumbeNeighbors(data, gridDimensions, note.coordinates);
+					const aliveNeighbors = this.getNeighbors(data, note.coordinates).length;
 					const shouldBeAlive = note.alive ? aliveNeighbors === 2 || aliveNeighbors === 3 : aliveNeighbors === 3;
 
 					if (note.alive !== shouldBeAlive) {
@@ -101,10 +127,12 @@ export class GameMechanicsService {
 			});
 
 			this.dataSubject.next(newData);
+			this.updateConnections();
 
 			if (!aliveCells) {
 				setTimeout(() => {
 					clearInterval(interval);
+					GameMechanicsService.running = false;
 					alert('All cells are dead! Game ends!');
 				});
 			}

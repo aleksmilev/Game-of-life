@@ -1,12 +1,12 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { Note } from './note.interface';
-import { GameMechanicsService } from '../../services/game-mechanics.service';
 import { GridIndex } from '../table/grid-index.interface';
+import { CellConnection, CellConnectionManiger } from '../../cell-connection/cell-connection';
 
 @Component({
-  selector: 'app-note',
-  templateUrl: './note.component.html',
-  styleUrl: './note.component.css'
+  	selector: 'app-note',
+  	templateUrl: './note.component.html',
+  	styleUrl: './note.component.css'
 })
 
 export class NoteComponent {
@@ -15,24 +15,26 @@ export class NoteComponent {
 	public id: number = 0;
 	public alive: boolean = false;
 	public size: number = 0;
-	public connections: GridIndex[] = [];
+	public coordinates: GridIndex = { x: 0, y: 0 }
+
+	public connections: CellConnection[] = [];
   
-	constructor(
-		private gameMechanics: GameMechanicsService
-	){}
+	constructor(){}
 
 	ngOnChanges(changes: SimpleChanges): void {
 	  	if (changes['data'] && this.data) {
 			this.id = this.data.id;
 			this.alive = this.data.alive;
 			this.size = this.data.size;
+			this.coordinates = this.data.coordinates;
 	  	}
 
-		if(this.alive){}
+		if (this.alive) {
+			this.connections = CellConnectionManiger.getConnections(this.coordinates);				
+		}
 	}	
 
-	public generatConnections(connection: GridIndex){
-		let lenght = 0;
-		let rotation = 0;
+	public generatConnections(cellConnection: CellConnection){
+		return CellConnectionManiger.generateSettings(cellConnection, this.data)
 	}
 }
