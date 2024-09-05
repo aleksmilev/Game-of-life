@@ -12,6 +12,8 @@ export class GameMechanicsService {
 
 	private static running: boolean = false;
 
+	private static noteSize: number = 35;
+
 	public generateNotesData(gridDimensions: GridIndex): Note[][] {
 		const data: Note[][] = [];
 		let idCounter = 1;
@@ -22,6 +24,7 @@ export class GameMechanicsService {
 				rowData.push({
 				id: idCounter++,
 				alive: false,
+				size: GameMechanicsService.noteSize,
 				coordinates: { x: col, y: row },
 				connections: []
 				});

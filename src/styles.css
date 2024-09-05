@@ -1,18 +1,18 @@
 * {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 body {
-    font-family: monospace;
-    background-color: var(--shadow-first-color);
+	font-family: monospace;
+	background-color: var(--shadow-first-color);
 
 	margin: 20px;
 }
 :root {
-    --primary-color: #FE2712;
-    --secondary-color: #0B4F6C;
-    --accent-color: #01BAEF;
-    --shadow-first-color: #FBFBFF;
-    --shadow-second-color: #040F16;
+	--primary-color: #FE2712;
+	--secondary-color: #0B4F6C;
+	--accent-color: #01BAEF;
+	--shadow-first-color: #FBFBFF;
+	--shadow-second-color: #040F16;
 }

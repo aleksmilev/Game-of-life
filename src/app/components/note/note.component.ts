@@ -14,7 +14,7 @@ export class NoteComponent {
 
 	public id: number = 0;
 	public alive: boolean = false;
-	public size: number = 35;
+	public size: number = 0;
 	public connections: GridIndex[] = [];
   
 	constructor(
@@ -25,6 +25,7 @@ export class NoteComponent {
 	  	if (changes['data'] && this.data) {
 			this.id = this.data.id;
 			this.alive = this.data.alive;
+			this.size = this.data.size;
 	  	}
 
 		if(this.alive){}
