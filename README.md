@@ -18,4 +18,4 @@ This project is an implementation of John Conway's Game of Life, a cellular auto
 
 ## Game preview
 
-[![Watch the video](https://raw.githubusercontent.com/aleksmilev/Game-of-life/blob/main/gameplay/preview.png)](https://raw.githubusercontent.com/aleksmilev/Game-of-life/blob/main/gameplay/gameplay.mp4)
+[![Watch the video](https://raw.githubusercontent.com/aleksmilev/Game-of-life/main/gameplay/preview.png)](https://raw.githubusercontent.com/aleksmilev/Game-of-life/main/gameplay/gameplay.mp4)
