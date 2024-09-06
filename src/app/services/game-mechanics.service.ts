@@ -125,19 +125,19 @@ export class GameMechanicsService {
 
 		const interval = setInterval(() => {
 			const data: Note[][] = this.dataSubject.getValue();
-			let aliveCells: boolean = false;
+			let aliveCells: Note[] = [];
 
 			const newData = data.map((row: Note[]) => {
 				return row.map((note: Note) => {
 					const aliveNeighbors = this.getNeighbors(data, note.coordinates).length;
 					const shouldBeAlive = note.alive ? aliveNeighbors === 2 || aliveNeighbors === 3 : aliveNeighbors === 3;
 
-					if (note.alive !== shouldBeAlive) {
-						return { ...note, alive: shouldBeAlive };
+					if (note.alive){
+						aliveCells.push(note);
 					}
 
-					if (note.alive && !aliveCells){
-						aliveCells = true;
+					if (note.alive !== shouldBeAlive) {
+						return { ...note, alive: shouldBeAlive };
 					}
 
 					return note;
@@ -145,9 +145,8 @@ export class GameMechanicsService {
 			});
 
 			this.dataSubject.next(newData);
-			this.updateConnections();
 
-			if (!aliveCells) {
+			if (aliveCells.length == 0) {
 				setTimeout(() => {
 					clearInterval(interval);
 					
@@ -188,6 +187,8 @@ export class GameMechanicsService {
 					}
 				});
 			}
+
+			this.updateConnections();
 		}, 500);
 	}
 }
