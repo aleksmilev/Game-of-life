@@ -2,13 +2,6 @@
 
 This project is an implementation of John Conway's Game of Life, a cellular automaton where cells in a grid evolve through generations based on a set of simple rules. The Game of Life is a zero-player game, meaning that its evolution is determined by its initial state with no further input required.
 
-## Features
-
-- **Customizable Grid Size**: The grid dimensions can be easily adjusted to any size.
-- **Random Initial State**: The grid is initialized with a random distribution of live cells.
-- **Automatic Updates**: The game state updates automatically every 5 seconds.
-- **Interactive Cell Updates**: The ability to update the state of individual cells (alive or dead) manually.
-
 ## Rules of the Game
 
 1. **Birth**: A dead cell with exactly three live neighbors becomes a live cell (birth).
