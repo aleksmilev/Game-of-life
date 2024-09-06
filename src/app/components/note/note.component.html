@@ -1,9 +1,16 @@
-<div class="note-container" 
-    [style.--size.px]="size" 
+<div class="note-container"  
     [style.--alive]="alive ? 'var(--primary-color)' : 'var(--shadow-second-color)'">
-    &nbsp;
+    <span
+        [style.--size.px]="size">
+        &nbsp;
+    </span>
 
-    <app-cell-connection 
-        *ngFor="let connection of connections" [settings]="generatConnections(connection)">
+    <div 
+        *ngFor="let connection of connections" 
+        class="connection-container">
+        
+        <app-cell-connection 
+            [settings]="generatConnections(connection)">
     </app-cell-connection>
+    </div>
 </div>

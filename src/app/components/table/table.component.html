@@ -3,11 +3,11 @@
         <app-note 
             *ngFor="let note of row" 
             [data]="note" 
-            (click)="noteClickEmit(note)">
+            (click)="noteClickEmit(note)" >
         </app-note>
     </div>
 
     <ng-template #noData>
         <p>No data available.</p>
-      </ng-template>
+    </ng-template>
 </div>

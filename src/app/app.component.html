@@ -1,5 +1,21 @@
-<div>
+<div id="title">
+    <h1>John Conway's Game of Life</h1>
+</div>
+
+<div id="game">
     <app-table [data]="data" (noteClickEvent)="updateClickedNote($event)"></app-table>
 </div>
 
-<button (click)="updateData()">test</button>
+<div id="controls">
+    <button 
+    class="game-button green" 
+        (click)="updateData()">
+        Start
+    </button>
+
+    <button 
+        class="game-button red" 
+        (click)="resetData()">
+        Kill
+    </button>
+</div>

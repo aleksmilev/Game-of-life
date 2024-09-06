@@ -10,6 +10,8 @@ export class TableComponent implements OnInit {
 	@Input({ required: true }) data: Note[][] = [];
 	@Output() noteClickEvent: EventEmitter<Note> = new EventEmitter<Note>();
 
+	private isHovered = false;
+
 	ngOnInit(): void {}
 
 	public noteClickEmit(note: Note) {

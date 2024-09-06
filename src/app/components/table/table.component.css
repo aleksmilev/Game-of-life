@@ -1,0 +1,7 @@
+#table-container{
+    display: inline-block;
+    margin: 80px 40px 0px 40px;
+    border: solid #0000 20px;
+    border-radius: 5px;
+    background-color: var(--shadow-first-color);
+}

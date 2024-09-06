@@ -1,0 +1,30 @@
+#title{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    width: 100%;
+}
+#title > h1 {
+    color: var(--shadow-second-color);
+    background-color: var(--shadow-first-color);
+    text-shadow: var(--accent-color) 1px 0 10px;
+    border-radius: 20px 20px 0px 0px;
+    padding: 10px 20px;
+    display: inline;
+
+    font-weight: bolder;
+    font-size: 400%;
+}
+
+#game{
+    display: flex;
+    justify-content: center;
+}
+
+#controls{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}

@@ -1,4 +1,12 @@
 .note-container{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;   
+    
+    position: relative;
+}
+
+.note-container > span{
     height: var(--size);
     width: var(--size);
     border-radius: 50%;
@@ -6,11 +14,9 @@
     background-color: var(--alive);
     color: #fff;
     
-    cursor: pointer;
+    z-index: 10;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;   
-    
-    position: relative;
+    cursor: pointer;
+    user-select: none;
+    caret-color: transparent;
 }

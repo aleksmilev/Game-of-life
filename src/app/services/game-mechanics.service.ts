@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { HostListener, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Note } from '../components/note/note.interface';
 import { GridIndex } from '../components/table/grid-index.interface';
 import { CellConnection, CellConnectionManiger } from '../cell-connection/cell-connection';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +13,17 @@ export class GameMechanicsService {
 	public data$ = this.dataSubject.asObservable();
 
 	public static running: boolean = false;
-	public static gridDimensions: GridIndex = { x: 15, y: 15 };
+	public static gridDimensions: GridIndex = { x: 0, y: 0 };
 
-	public static noteSize: number = 35;
+	public static noteSize: number = 32;
+
+	constructor(private toastr: ToastrService){}
 
 	public generateNotesData(): Note[][] {
 		const data: Note[][] = [];
 		let idCounter = 1;
+
+		this.calculateBoxes();
 
 		for (let row = 0; row < GameMechanicsService.gridDimensions.y; row++) {
 			const rowData: Note[] = [];
@@ -37,6 +42,19 @@ export class GameMechanicsService {
 		this.dataSubject.next(data);
 		return data;
 	}
+
+	public calculateBoxes() {
+		const marginWidth = 80;
+		const marginHeight = 101;
+		
+		const width = window.innerWidth - (2 * marginWidth); 
+		const height = window.innerHeight - (2 * marginHeight); 
+	
+		GameMechanicsService.gridDimensions = {
+			x: Math.floor(width / GameMechanicsService.noteSize),
+			y: Math.floor(height / GameMechanicsService.noteSize)
+		}		
+	  }
 
 	public generateCoordinates(): GridIndex[] {
 		const range = [-1, 0, 1];
@@ -132,8 +150,42 @@ export class GameMechanicsService {
 			if (!aliveCells) {
 				setTimeout(() => {
 					clearInterval(interval);
-					GameMechanicsService.running = false;
-					alert('All cells are dead! Game ends!');
+					
+					if (GameMechanicsService.running) {
+						GameMechanicsService.running = false;
+						this.toastr.error(
+							'All cells are dead!', 
+							'Game ends', 
+							{
+								positionClass: 'toast-top-center',
+								titleClass: 'custom-toast-title',
+								timeOut: 2000, 
+							}
+						);
+					} else {
+						this.toastr.success(
+							'You kill all of the cells!', 
+							'Game ends', 
+							{
+								enableHtml: true,
+								positionClass: 'toast-top-center',
+    							titleClass: 'custom-toast-title',
+								timeOut: 2000,
+							}
+						);
+						setTimeout(() => {
+							this.toastr.success(
+								'You killed them all, <br>or not just the men, <br>but the women and children too',
+								'',
+								{
+									enableHtml: true,
+									positionClass: 'toast-top-center',
+									titleClass: 'custom-toast-title',
+									timeOut: 4000,
+								}
+							)
+						}, 1900)
+					}
 				});
 			}
 		}, 500);
