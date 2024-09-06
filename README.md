@@ -15,3 +15,7 @@ This project is an implementation of John Conway's Game of Life, a cellular auto
 2. **Survival**: A live cell with two or three live neighbors stays alive (survival).
 3. **Death by Overpopulation**: A live cell with more than three live neighbors dies (overpopulation).
 4. **Death by Isolation**: A live cell with fewer than two live neighbors dies (isolation).
+
+## Game preview
+
+[![Watch the video](https://raw.githubusercontent.com/aleksmilev/Game-of-life/blob/main/gameplay/preview.png)](https://raw.githubusercontent.com/aleksmilev/Game-of-life/blob/main/gameplay/gameplay.mp4)
